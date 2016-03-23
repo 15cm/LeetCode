@@ -2,7 +2,7 @@
 Yet another LeetCode solution. (Mostly in Javascript)
 
 |# |Title |Solution |Difficulty |
-|:-			|:-			|:-			|:-			|
+|---			|---			|---			|---			|
 |215 |[Kth Largest Element in an Array](https://leetcode.com/problems/kth-largest-element-in-an-array/)| [JavaScript](https://github.com/15cm/LeetCode/blob/master/Algorithms/KthLargestElementinanArray.js)| Medium|
 |18 |4Sum | [JavaScript](https://github.com/15cm/LeetCode/blob/master/Algorithms/4Sum.js)| Medium|
 |16 |[3Sum Closest](https://leetcode.com/problems/3sum-closest/)| [JavaScript](https://github.com/15cm/LeetCode/blob/master/Algorithms/3SumClosest.js) | Medium|
