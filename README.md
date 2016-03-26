@@ -4,6 +4,9 @@ Yet another LeetCode solution. (Mostly in Javascript)
 |# |Title |Solution |Difficulty |
 |---			|---			|---			|---			|
 |215 |[Kth Largest Element in an Array](https://leetcode.com/problems/kth-largest-element-in-an-array/)| [JavaScript](https://github.com/15cm/LeetCode/blob/master/Algorithms/KthLargestElementinanArray.js)| Medium|
+|232|[Merge k Sorted Lists](https://leetcode.com/problems/merge-k-sorted-lists/)| [JavaScript](https://github.com/15cm/LeetCode/blob/master/Algorithms/MergeKSortedLists.js)| Hard|
+|20 |[Merge Two Sorted Lists](https://leetcode.com/problems/merge-two-sorted-lists/)| [JavaScript](https://github.com/15cm/LeetCode/blob/master/Algorithms/MergeTwoSortedLists.js)| Easy|
+|19 |[Remove Nth Node From End of List](https://leetcode.com/problems/remove-nth-node-from-end-of-list/)| [JavaScript](https://github.com/15cm/LeetCode/blob/master/Algorithms/RemoveNthNodeFromEndOfList.js)| Easy|
 |18 |[4Sum](https://leetcode.com/problems/4sum/) | [JavaScript](https://github.com/15cm/LeetCode/blob/master/Algorithms/4Sum.js)| Medium|
 |16 |[3Sum Closest](https://leetcode.com/problems/3sum-closest/)| [JavaScript](https://github.com/15cm/LeetCode/blob/master/Algorithms/3SumClosest.js) | Medium|
 |15 |[3SUM](https://leetcode.com/problems/3sum/)| [JavaScript](https://github.com/15cm/LeetCode/blob/master/Algorithms/3Sum.js) | Medium|
