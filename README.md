@@ -3,8 +3,10 @@ Yet another LeetCode solution. (Mostly in Javascript)
 
 |# |Title |Solution |Difficulty |
 |---			|---			|---			|---			|
+|229| [Majority Element II](https://leetcode.com/problems/majority-element-ii/)| [JavaScript](https://github.com/15cm/LeetCode/blob/master/Algorithms/MajorityElement2.js)| Medium|
 |215 |[Kth Largest Element in an Array](https://leetcode.com/problems/kth-largest-element-in-an-array/)| [JavaScript](https://github.com/15cm/LeetCode/blob/master/Algorithms/KthLargestElementinanArray.js)| Medium|
-|232|[Merge k Sorted Lists](https://leetcode.com/problems/merge-k-sorted-lists/)| [JavaScript](https://github.com/15cm/LeetCode/blob/master/Algorithms/MergeKSortedLists.js)| Hard|
+|169|[Majority Element](https://leetcode.com/problems/majority-element/)| [JavaScript](https://github.com/15cm/LeetCode/blob/master/Algorithms/MajorityElement.js)| Easy|
+|23|[Merge k Sorted Lists](https://leetcode.com/problems/merge-k-sorted-lists/)| [JavaScript](https://github.com/15cm/LeetCode/blob/master/Algorithms/MergeKSortedLists.js)| Hard|
 |20 |[Merge Two Sorted Lists](https://leetcode.com/problems/merge-two-sorted-lists/)| [JavaScript](https://github.com/15cm/LeetCode/blob/master/Algorithms/MergeTwoSortedLists.js)| Easy|
 |19 |[Remove Nth Node From End of List](https://leetcode.com/problems/remove-nth-node-from-end-of-list/)| [JavaScript](https://github.com/15cm/LeetCode/blob/master/Algorithms/RemoveNthNodeFromEndOfList.js)| Easy|
 |18 |[4Sum](https://leetcode.com/problems/4sum/) | [JavaScript](https://github.com/15cm/LeetCode/blob/master/Algorithms/4Sum.js)| Medium|
