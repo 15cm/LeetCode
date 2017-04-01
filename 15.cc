@@ -18,8 +18,7 @@ public:
                     else {
                         ans.push_back(vector<int> {c, nums[l], nums[r]});
                         l ++;
-                        while(nums[l] == nums[l-1]){
-                            if(l == r) break;
+                        while(l < r && nums[l] == nums[l-1]){
                             l ++;
                         }
                     }
