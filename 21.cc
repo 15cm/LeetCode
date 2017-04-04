@@ -29,15 +29,8 @@ public:
             }
             dummy = dummy->next;
         }
-        for(; l1 != NULL; l1 = l1->next) {
-            dummy->next = l1;
-            dummy = dummy->next;
-        }
-        for(; l2 != NULL; l2 = l2->next) {
-            dummy->next = l2;
-            dummy = dummy->next;
-        }
-        dummy->next = NULL;
+        if(l1 == NULL) dummy->next = l2;
+        else dummy->next = l1;
         return dummyHead->next;
     }
 };
