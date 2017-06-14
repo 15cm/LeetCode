@@ -2,3 +2,5 @@ main
 main.cc
 Makefile
 main.dSYM
+
+catch.hpp
