@@ -7,9 +7,9 @@ class Solution {
 public:
     vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
         vector<vector<int>> ans;
+        sort(candidates.begin(), candidates.end());
         vector<int> state(candidates.size());
         state.assign(candidates.size(), 0);
-        sort(candidates.begin(), candidates.end());
         search(candidates, target, state, 0, ans);
         return ans;
     }
@@ -26,7 +26,7 @@ public:
             return;
         }
         if(cur >= candidates.size() || target < 0) return;
-        for(int i = 0; i <= target / candidates[cur]; i ++) {
+        for(int i = target / candidates[cur]; i >= 0; i --) {
             state[cur] = i;
             search(candidates, target - i * candidates[cur], state, cur + 1, ans);
         }
