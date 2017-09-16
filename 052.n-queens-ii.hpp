@@ -3,7 +3,7 @@ using namespace std;
 class Solution {
 public:
     int totalNQueens(int n) {
-        vector<vector<bool>> visit(3, vector<bool>(2 * n - 1, false));
+        vector<vector<bool>> visit(3, vector<bool>(2*n - 1, false));
         int ans = 0;
         search(0, n, visit, ans);
         return ans;
