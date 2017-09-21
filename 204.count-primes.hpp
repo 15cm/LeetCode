@@ -2,7 +2,7 @@ class Solution {
 public:
     int countPrimes(int n) {
         vector<bool> vis(n);
-        int m = sqrt(n + 0.5);
+        int m = sqrt(n);
         for(int i = 2; i <= m; i++)
             if(!vis[i])
                 for(int j = i*i; j < n; j += i)
