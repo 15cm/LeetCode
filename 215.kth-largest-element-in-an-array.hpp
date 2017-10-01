@@ -17,8 +17,8 @@ public:
         int i = lo, j = hi + 1;
         int v = nums[lo];
         while(true) {
-            while(nums[++i] < v) if(i == hi) break;
-            while(nums[--j] > v) if(j == lo) break;
+            while(nums[++i] < v && i < hi);
+            while(nums[--j] > v && j > lo);
             if(i >= j) break;
             swap(nums, i, j);
         }
