@@ -3,18 +3,13 @@ public:
     /** Initialize your data structure here. */
     unordered_map<int, unordered_set<int>> mp;
     vector<int> arr;
-    int sz = 0;
     RandomizedCollection() {
-        arr = vector<int>(10);
     }
     
     /** Inserts a value to the collection. Returns true if the collection did not already contain the specified element. */
     bool insert(int val) {
-        if(sz == arr.size()) {
-            resize(sz * 2);
-        }
-        mp[val].insert(sz);
-        arr[sz++] = val;
+        mp[val].insert(arr.size());
+        arr.push_back(val);
         return mp[val].size() == 1;
     }
     
@@ -23,12 +18,13 @@ public:
         if(mp[val].size() > 0) {
             int idx = *mp[val].begin();
             mp[val].erase(idx);
-            if(idx == sz - 1) {
-                sz--;
+            if(idx == arr.size() - 1) {
+                arr.pop_back();
             } else {
-                int ele = arr[--sz];
-                swap(arr[idx], arr[sz]);
-                mp[ele].erase(sz);
+                int ele = arr.back();
+                swap(arr[idx], arr.back());
+                arr.pop_back();
+                mp[ele].erase(arr.size());
                 mp[ele].insert(idx);
             }
             return true;
@@ -39,11 +35,7 @@ public:
     
     /** Get a random element from the collection. */
     int getRandom() {
-        return arr[rand() % sz];
-    }
-private:
-    void resize(int newSz) {
-        arr.resize(newSz);
+        return arr[rand() % arr.size()];
     }
 };
 
