@@ -9,29 +9,20 @@
 class Solution {
 public:
     void connect(TreeLinkNode *root) {
-        TreeLinkNode *succ = NULL, *head = NULL, *cur = root;
-        while(cur) {
-            while(cur) {
-                if(cur->left) {
-                    if(succ) {
-                        succ->next = cur->left;
-                    } else {
-                        head = cur->left;
-                    }
-                    succ = cur->left;
-                }
-                if(cur->right) {
-                    if(succ) {
-                        succ->next = cur->right;
-                    }  else {
-                        head = cur->right;
-                    }
-                    succ = cur->right;
-                }
-                cur = cur->next;
+        for(TreeLinkNode *cur = root, *prev = NULL, *head = NULL; cur; cur = head, prev = NULL, head = NULL) {
+            for(auto x = cur; x; x = x->next) {
+                helper(x->left, prev, head);
+                helper(x->right, prev, head);
             }
-            cur = head;
-            succ = head = NULL;
         }
+    }
+    void helper(TreeLinkNode *node, TreeLinkNode* &prev, TreeLinkNode* &head) {
+        if(!node) return;
+        if(prev) {
+            prev->next = node;
+        } else {
+            head = node;
+        }
+        prev = node;
     }
 };
