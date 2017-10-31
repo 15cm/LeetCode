@@ -5,9 +5,9 @@ using namespace std;
 
 class Trie {
     struct Node {
-        bool isEnd;
+        int val;
         vector<Node*> children;
-        Node():isEnd(false), children(vector<Node*>(26, NULL)) {}
+        Node():val(-1), children(vector<Node*>(26, NULL)) {}
     };
     Node* root;
 public:
@@ -17,7 +17,7 @@ public:
     Node* insert(Node* node, int p, string& s) {
         if(!node) node = new Node();
         if(p == s.length()) {
-            node->isEnd = true;
+            node->val = p;
             return node;
         }
         int idx = s[p] - 'a';
@@ -26,16 +26,15 @@ public:
     }
 
     int find(string s) {
-        return find(root, 0, s);
+        Node* x = find(root, 0 , s);
+        return x ? x->val : -1;
     }
 
-    int find(Node* node, int p, string& s) {
-        if(!node) return -1;
-        if(node->isEnd) return 0;
-        if(p == s.length()) return -1;
+    Node* find(Node* node, int p, string& s) {
+        if(!node) return NULL;
+        if(node->val != -1 || p == s.length()) return node;
         int idx = s[p] - 'a';
-        int tmp = find(node->children[idx], p + 1, s);
-        return tmp == -1 ? -1 : 1 + tmp;
+        return find(node->children[idx], p + 1, s);
     }
 };
 
