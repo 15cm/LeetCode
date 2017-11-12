@@ -1,43 +1,29 @@
 class Solution {
 public:
     int strStr(string haystack, string needle) {
-        if(needle.empty()) return 0;
-        auto lps = computeLpsArray(needle);
-        int n = haystack.length(), m = needle.length();
-        for(int i = 0, j = 0; i < n;) {
-            if(haystack[i] == needle[j]) {
-                i++;
-                j++;
-            }
-
-            if(j == m) {
-                return i - j;
-            }
-            if(i < n && haystack[i] != needle[j]) {
-                if(j != 0)
-                    j = lps[j - 1];
-                else
-                    i++;
-            }
+        string& txt = haystack, &pat = needle;
+        int n = txt.length(), m = pat.length();
+        if(m == 0) return 0;
+        auto fail = getFail(pat);
+        for(int i = 0, j = 0; i < n; i++, j++) {
+            while(j >= 0 && txt[i] != pat[j])
+                j = fail[j];
+            if(j == m - 1)
+                return i - m + 1;
         }
         return -1;
     }
-    vector<int> computeLpsArray(string& pat) {
-        int n = pat.length(), len = 0, i = 1;
-        vector<int> lps(n);
-
-        while(i < n) {
-            if(pat[i] == pat[len]) {
-                lps[i++] = ++len;
-            } else {
-                if(len != 0) {
-                    len = lps[len - 1];
-                } else {
-                    lps[i++] = 0;
-                }
-            }
+    vector<int> getFail(string& pat) {
+        int m = pat.length();
+        vector<int> fail(m);
+        for(int i = 0, j = -1; i < m; i++, j++) {
+            if(j >= 0 && pat[i] == pat[j])
+                fail[i] = fail[j];
+            else
+                fail[i] = j;
+            while(j >= 0 && pat[i] != pat[j])
+                j = fail[j];
         }
-
-        return lps;
+        return fail;
     }
 };
