@@ -22,6 +22,7 @@ public:
                 int gtDay = max(f[left], f[right]);
                 if(k == 0 || f[q.front()] > gtDay)
                     ans = min(ans, gtDay);
+                cout << gtDay << endl;
             }
         }
         return ans == n + 1 ? -1 : ans;
