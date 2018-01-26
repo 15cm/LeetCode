@@ -37,13 +37,14 @@ public:
             if(mp[c] > 0) {
                 if(c == prev)
                     continue;
-                for(int cnt = mp[c]; cnt > 0; cnt -= 2) {
-                    mp[c] -= cnt;
-                    path.append(cnt/2, c);
+                int tmp = mp[c];
+                while(mp[c] > 0) {
+                    path.push_back(c);
+                    mp[c] -= 2;
                     helper(path, c, ans, mid, len);
-                    mp[c] += cnt;
-                    path.erase(path.length() - cnt/2);
                 }
+                path.erase(path.length() - tmp/2);
+                mp[c] = tmp;
             }
         }
     }
