@@ -8,13 +8,13 @@ public:
             int len = k - j;
             chars[i++] = chars[j];
             if(len > 1) {
-                int l = i;
-                while(len) {
-                    chars[l++] = len % 10 + '0';
-                    len /= 10;
+                int exp = 1;
+                for(int x = len; x >= 10; x /= 10) exp *= 10;
+                while(exp) {
+                    chars[i++] = len / exp + '0';
+                    len %= exp;
+                    exp /= 10;
                 }
-                for(int p = i, q = l-1; p < q; p++, q--) swap(chars[p], chars[q]);
-                i = l;
             }
         }
         return i;
