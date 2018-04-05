@@ -24,7 +24,7 @@ public:
                     else if(res < 0)k--;
                     else {
                         ans.push_back(vector<int> {nums[cur], nums[i], nums[j], nums[k]});
-                        j ++;
+                        j++;
                         while(j < k && nums[j] == nums[j-1]) j++;
                     }
                 }
