@@ -2,9 +2,10 @@ struct vector_hash {
     size_t operator() (const vector<int>& v) const {
         size_t hash = 0;
         int mask = 0x7;
+        int shift = 0;
         for(int x: v) {
-            hash |= x & mask;
-            mask <<= 3;
+            hash |= (x & mask) << shift;
+            shift += 3;
         }
         return hash;
     }

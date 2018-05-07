@@ -14,7 +14,8 @@ public:
         int n = nums.size();
         for(int i = p; i < n; i++) {
             int key = nums[i] + 100;
-            if(!vis[key] && (path.empty() || nums[i] >= path.back())) {
+            if(vis[key]) continue;
+            if(path.empty() || nums[i] >= path.back()) {
                 path.push_back(nums[i]);
                 dfs(i + 1, path, nums, ans);
                 path.pop_back();
