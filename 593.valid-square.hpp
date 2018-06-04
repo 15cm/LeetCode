@@ -3,11 +3,8 @@ public:
     bool validSquare(vector<int>& p1, vector<int>& p2, vector<int>& p3, vector<int>& p4) {
         if(p1 == p2 && p2 == p3 && p3 == p4 && p4 == p1) return false;
         return check({p1, p2, p3, p4}) ||
-            check({p1, p2, p4, p3}) ||
             check({p1, p3, p2, p4}) ||
-            check({p1, p3, p4, p2}) ||
-            check({p1, p4, p2, p3}) ||
-            check({p1, p4, p3, p2}) ;
+            check({p1, p3, p4, p2}) ;
     }
     bool check(const vector<vector<int>> &points) {
         int len = lenSquare(points[0], points[3]);
