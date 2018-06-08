@@ -1,2 +1,2 @@
 # LeetCode
-Yet another LeetCode solution.
+My LeetCode Submissions
