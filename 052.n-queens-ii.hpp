@@ -1,27 +1,22 @@
-#include <vector>
-using namespace std;
 class Solution {
-    vector<bool> vcol, vmain, vanti;
 public:
     int totalNQueens(int n) {
-        vcol = vector<bool>(n);
-        vmain = vanti = vector<bool>(2*n - 1);
+        vector<bool> col(n), diag(2 * n - 1), antiDiag(2 * n - 1);
         int ans = 0;
-        dfs(0, n, ans);
+        dfs(0, n, col, diag, antiDiag, ans);
         return ans;
     }
-    void dfs(int row, int n, int& ans) {
-        if(row == n) {
+    void dfs(int r, int n, vector<bool> &col, vector<bool> &diag, vector<bool> &adiag, int &ans) {
+        if(r == n) {
             ans++;
             return;
         }
-        for(int i = 0; i < n; i++) {
-            int imain = i - row + n - 1, ianti = i + row;
-            if(!(vcol[i] || vmain[imain] || vanti[ianti])) {
-                vcol[i] = vmain[imain] = vanti[ianti] = true;
-                dfs(row+1, n, ans);
-                vcol[i] = vmain[imain] = vanti[ianti] = false;
-            }
+        for(int c = 0; c < n; c++) {
+            int diagIndex = c - r + n - 1, adiagIndex = c + r;
+            if(col[c] || diag[diagIndex] || adiag[adiagIndex]) continue;
+            col[c] = diag[diagIndex] = adiag[adiagIndex] = true;
+            dfs(r + 1, n, col, diag, adiag, ans);
+            col[c] = diag[diagIndex] = adiag[adiagIndex] = false;
         }
     }
 };
