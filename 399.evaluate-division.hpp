@@ -35,7 +35,7 @@ public:
             for(auto& edge: adj[u]) {
                 string& v = edge.to;
                 double val = edge.val;
-                if(!vis.count(v) && dfs(v, dst, path * val, vis, kres))
+                if(!vis.count(v) && dfs(v, dst, path * val, vis, res))
                     return true;
             }
         }
