@@ -1,79 +1,73 @@
-#include <vector>
-#include <queue>
-#include <list>
-#include <iostream>
-using namespace std;
 class Solution {
 public:
-    vector<vector<int>> adj;
     vector<vector<string>> findLadders(string beginWord, string endWord, vector<string>& wordList) {
-        vector<vector<string>> ans;
-        if(wordList.empty()) return ans;
-
-        vector<string> words(wordList);
-        words.insert(words.begin(), beginWord);
-        int n = words.size();
-        int s = 0, t = -1;
-        adj = vector<vector<int>>(n);
-
+        int src = 0, dst = -1;
+        int n = wordList.size() + 1;
+        vector<vector<int>> adj(n);
         for(int i = 0; i < n; i++) {
-            if(words[i] == endWord) t = i;
-            for(int j = i + 1; j < n; j++)
-                if(hasPath(words[i], words[j]))
-                    addEdge(i, j);
-        }
-        if(t == -1) return ans;
-
-        queue<int> q;
-        vector<vector<int>> p(n);
-        vector<int> d(n);
-        vector<bool> vis(n);
-        vector<bool> inq(n);
-        q.push(0);
-        d[0] = 1;
-        vis[0] = true;
-        while(!q.empty()) {
-            int u = q.front(); q.pop();
-            if(u == t) break;
-            inq[u] = false;
-            for(int v: adj[u])
-                if(!vis[v]) {
-                    vis[v] = true;
-                    d[v] = d[u] + 1;
-                    if(!inq[v]) {
-                        inq[v] = true;
-                        q.push(v);
-                        p[v].push_back(u);
-                    }
-                } else if(d[u] + 1 == d[v] && inq[v]) {
-                    p[v].push_back(u);
+            string &s = (i == 0 ? beginWord : wordList[i - 1]);
+            if(s == endWord) dst = i;
+            for(int j = i + 1; j < n; j++) {
+                string &t = wordList[j - 1];
+                if(hasPath(s, t)) {
+                    adj[i].push_back(j);
+                    adj[j].push_back(i);
                 }
-        }
-
-        buildPath(s, t, list<string>{words[t]}, ans, p, words);
-        return ans;
-    }
-    bool hasPath(const string& s1, const string& s2) {
-        int cnt = 0;
-        for(int i = 0; i < s1.length(); i++) {
-            if(s1[i] != s2[i]) cnt++;
-        }
-        return cnt == 1;
-    }
-    void addEdge(int u, int v) {
-        adj[u].push_back(v);
-        adj[v].push_back(u);
-    }
-    void buildPath(int start, int to, const list<string>& path, vector<vector<string>>& ans, const vector<vector<int>> paths, const vector<string>& words) {
-        if(to == start) {
-            if(!path.empty())
-                ans.push_back(vector<string>(path.begin(), path.end()));
-        } else {
-            for(int from: paths[to]) {
-                auto tmp = path;
-                tmp.push_front(words[from]);
-                buildPath(start, from, tmp, ans, paths, words);
             }
         }
+        if(dst == -1) return {};
+
+        vector<int> dist(n, -1);
+        vector<vector<int>> path(n);
+        queue<int> q;
+        int d = 0;
+
+        q.push(src);
+        while(!q.empty()) {
+            int sz = q.size();
+            while(sz--) {
+                int cur = q.front(); q.pop();
+                for(int next: adj[cur]) {
+                    if(dist[next] == -1 || d < dist[next]) {
+                        dist[next] = d;
+                        path[next].push_back(cur);
+                        q.push(next);
+                    } else if(d == dist[next]) {
+                        path[next].push_back(cur);
+                    }
+                }
+            }
+            d++;
+        }
+
+        auto ans = getPaths(dst, src, path, beginWord, wordList);
+        for(auto &path: ans)
+            reverse(path.begin(), path.end());
+        return ans;
+    }
+    bool hasPath(string &s, string &t) {
+        int n = s.size();
+        for(int i = 0; i < n; i++) {
+            if(s[i] != t[i]) {
+                for(int j = i + 1; j < n; j++)
+                    if(s[j] != t[j]) return false;
+                return true;
+            }
+        }
+        return false;
+    }
+    vector<vector<string>> getPaths(int cur, int end, vector<vector<int>> &path, string &beginWord, vector<string> &words) {
+        if(cur == end) {
+            return {{beginWord}};
+        }
+        vector<vector<string>> res;
+        for(int p: path[cur]) {
+            for(auto path: getPaths(p, end, path, beginWord, words)) {
+                vector<string> tmp {words[cur - 1]};
+                tmp.insert(tmp.end(), path.begin(), path.end());
+                res.push_back(tmp);
+            }
+        }
+        return res;
     }
 };
