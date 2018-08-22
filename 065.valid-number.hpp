@@ -1,124 +1,50 @@
-#include <iostream>
-using namespace std;
+enum Alphabet {
+               Space,
+               Sign,
+               Digit,
+               Dot,
+               E,
+               Invalid
+};
+
 class Solution {
 public:
     bool isNumber(string s) {
-        if(s.empty()) return false;
-        int p = 0, n = s.length();
-        enum State {
-            s_begin,
-            s_firstDigits,
-            s_afterDot,
-            s_atExponent,
-            s_lastDigits,
-            s_end
+        vector<unordered_map<Alphabet, int>> dfa {
+            {},
+            {{Space, 1}, {Sign, 2}, {Digit, 3}, {Dot, 4}},
+            {{Space, 9}, {Digit, 3}, {Dot, 4}},
+            {{Space, 9}, {Digit, 3}, {Dot, 5}, {E, 6}},
+            {{Digit, 5}},
+            {{Space, 9}, {Digit, 5}, {E, 6}},
+            {{Sign, 7}, {Digit, 8}},
+            {{Digit, 8}},
+            {{Space, 9}, {Digit, 8}},
+            {{Space, 9}}
         };
-        State prevState = s_begin;
-        State state = s_begin;
-        bool shouldCheck = false;
-        while(p < n) {
-            switch(state) {
-            case s_begin:
-                if(s[p] == ' ') p++;
-                else if(isDigit(s[p])) {
-                    state = s_firstDigits;
-                }
-                else if(isSign(s[p])) {
-                    shouldCheck = true;
-                    if(p < n - 1 && s[p+1] == '.') {
-                        p += 2;
-                        state = s_afterDot;
-                    } else {
-                        state = s_firstDigits;
-                        p++;
-                    }
-                } else if(s[p] == '.') {
-                    state = s_afterDot;
-                    shouldCheck = true;
-                    p++;
-                } else {
-                    return false;
-                }
-                break;
-            case s_firstDigits:
-                prevState = state;
-                if(isDigit(s[p])) p++;
-                else if(s[p] == 'e') {
-                    state = s_atExponent;
-                } else if(s[p] == '.') {
-                    state = s_afterDot;
-                    shouldCheck = true;
-                    p++;
-                } else if(s[p] == ' ') {
-                    state = s_end;
-                } else {
-                    return false;
-                }
-                break;
-            case s_afterDot:
-                prevState = state;
-                if(isDigit(s[p])) p++;
-                else if(s[p] == 'e') {
-                    state = s_atExponent;
-                } else if(s[p] == ' ') {
-                    state = s_end;
-                } else {
-                    return false;
-                }
-                break;
-            case s_atExponent:
-                prevState = state;
-                if(p == n - 1) return false;
-                else {
-                    p++;
-                    if(isSign(s[p])) {
-                        shouldCheck = true;
-                        state = s_lastDigits;
-                        p ++;
-                    } else if(isDigit(s[p])) {
-                        state = s_lastDigits;
-                    } else {
-                        return false;
-                    }
-                }
-                break;
-            case s_lastDigits:
-                prevState = state;
-                if(isDigit(s[p])) p++;
-                else if(s[p] == ' ') {
-                    state = s_end; break;
-                } else {
-                    return false;
-                }
-                break;
-            case s_end:
-                if(s[p] == ' ') p++;
-                else return false;
-                break;
-            };
-            if(shouldCheck) {
-                switch(state) {
-                case s_firstDigits:
-                case s_lastDigits:
-                    if(p == n || !isDigit(s[p])) return false;
-                    break;
-                case s_afterDot:
-                    if(prevState == s_begin) {
-                        if(p == n || !isDigit(s[p])) return false;
-                    }
-                    break;
-                default:
-                    break;
-                };
-                shouldCheck = false;
+        unordered_set<int> accept_states {
+            3, 5, 8, 9
+        };
+
+        int state = 1;
+        for(char c: s) {
+            Alphabet c_type = Invalid;
+            if(c == ' ') {
+                c_type = Space;
+            } else if(c == '+' || c == '-') {
+                c_type = Sign;
+            } else if(isdigit(c)) {
+                c_type = Digit;
+            } else if(c == '.') {
+                c_type = Dot;
+            } else if(c == 'e') {
+                c_type = E;
             }
+            if(!dfa[state].count(c_type)) {
+                return false;
+            }
+            state = dfa[state][c_type];
         }
-        return state != s_begin;
-    }
-    bool isSign(char c) {
-        return c == '+' || c == '-';
-    }
-    bool isDigit(char c) {
-        return c >= '0' && c <= '9';
+        return accept_states.count(state);
     }
 };
