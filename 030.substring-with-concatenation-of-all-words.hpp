@@ -1,61 +1,33 @@
-#include <typeinfo>
-#include <vector>
-#include <map>
-#include <iostream>
-#include <algorithm>
-using namespace std;
-
 class Solution {
 public:
     vector<int> findSubstring(string s, vector<string>& words) {
-        vector<char> ALPHABET;
-        for(int i = 0; i < 26; i ++) {
-            ALPHABET.push_back(i + 'a');
-        }
+        if(words.empty()) return {};
+        int len = words[0].size();
+        unordered_map<string, int> dict;
+        for(auto &word: words) dict[word]++;
         vector<int> ans;
-        map<char, vector<string>> initialWords;
-        if(words.size() == 0) return ans;
-        int wordCnt = words.size();
-        int wordLen = words[0].length();
-
-        sort(words.begin(), words.end());
-        for(auto& word: words) {
-            if(initialWords.find(word[0]) == initialWords.end())
-                initialWords[word[0]] = vector<string>();
-            initialWords[word[0]].push_back(word);
-        }
-
-        for(int index = 0; index <= (int)(s.length() - wordCnt * wordLen); index ++) {
-            map<char, vector<string>> initialSubstrings;
-            for(int i = 0, initialIndex = index; i < wordCnt; i ++, initialIndex += wordLen) {
-                char initial = s[initialIndex];
-                if(initialSubstrings.find(initial) == initialSubstrings.end()) {
-                    initialSubstrings[initial] = vector<string>();
+        for(int k = 0; k < len; k++) {
+            unordered_map<string, int> local_dict;
+            int cnt = 0;
+            for(int i = k, j = k; j < s.size(); j += len) {
+                if((j - i) / len >= words.size()) {
+                    string remove_word = s.substr(i, len);
+                    if(dict.count(remove_word)) {
+                        if(local_dict[remove_word]-- <= dict[remove_word])
+                            cnt--;
+                    }
+                    i += len;
                 }
-                initialSubstrings[initial].push_back(s.substr(initialIndex, wordLen));
-            }
-            bool ok = true;
-            for(auto& ch: ALPHABET) {
-                if(initialSubstrings.count(ch) != initialWords.count(ch)) {
-                    ok = false; break;
-                } else if(initialSubstrings.count(ch) > 0 && !checkConcat(initialSubstrings[ch], initialWords[ch])) {
-                    ok = false; break;
+                string add_word = s.substr(j, len);
+                if(dict.count(add_word)) {
+                    if(++local_dict[add_word] <= dict[add_word])
+                        cnt++;
                 }
-            }
-            if(ok) {
-                ans.push_back(index);
+                if(cnt == words.size())
+                    ans.push_back(i);
             }
         }
-
         return ans;
     }
 
-    bool checkConcat(vector<string> substrings, vector<string> words) {
-        if(substrings.size() != words.size()) return false;
-        sort(substrings.begin(), substrings.end());
-        for(int i = 0; i < substrings.size(); i ++) {
-            if(substrings[i] != words[i]) return false;
-        }
-        return true;
-    }
 };
