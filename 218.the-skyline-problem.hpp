@@ -1,62 +1,43 @@
 class Solution {
 public:
     vector<pair<int, int>> getSkyline(vector<vector<int>>& buildings) {
-        if(buildings.empty()) return vector<pair<int, int>>();
-        return getSkyline(buildings, 0, buildings.size() - 1);
+        if(buildings.empty()) return {};
+        return mergeSort(buildings, 0, buildings.size() - 1);
     }
-    vector<pair<int, int>> getSkyline(vector<vector<int>>& buildings, int lo, int hi) {
-        vector<pair<int, int>> s;
-        if(lo == hi) {
-            auto& b = buildings[lo];
-            s.push_back(make_pair(b[0], b[2]));
-            s.push_back(make_pair(b[1], 0));
-            return s;
-        }
+    vector<pair<int, int>> mergeSort(vector<vector<int>> &rects, int lo, int hi) {
+        if(lo == hi) return {{rects[lo][0], rects[lo][2]}, {rects[lo][1], 0}};
         int mid = lo + (hi - lo) / 2;
-        auto s1 = getSkyline(buildings, lo, mid);
-        auto s2 = getSkyline(buildings, mid + 1, hi);
-        return merge(s1, s2);
+        auto left = mergeSort(rects, lo, mid);
+        auto right = mergeSort(rects, mid + 1, hi);
+        return merge(left, right);
     }
-    vector<pair<int, int>> merge(vector<pair<int, int>>& s1, vector<pair<int, int>>& s2) {
-        vector<pair<int, int>> s;
-        int n1 = s1.size(), n2 = s2.size();
-        int h1 = 0, h2 = 0, prevH = -1;
-        int i = 0, j = 0;
-        while(i < n1 && j < n2) {
-            int l, l1 = s1[i].first, l2 = s2[j].first;
-            if(l1 < l2) {
-                h1 = s1[i++].second;
-                l = l1;
-            } else if (l1 > l2) {
-                h2 = s2[j++].second;
-                l = l2;
+    vector<pair<int, int>> merge(vector<pair<int, int>> &l, vector<pair<int, int>> &r) {
+        int m = l.size(), n = r.size();
+        vector<pair<int, int>> res;
+        int prev_h = 0;
+        for(int i = 0, j = 0, hl = 0, hr = 0; i < m || j < n;) {
+            int k;
+            if(i < m && j < n && l[i].first == r[j].first) {
+                hl = l[i].second;
+                hr = r[j].second;
+                k = l[i].first;
+                i++;
+                j++;
+            } else if(j == n || i < m && l[i].first < r[j].first) {
+                hl = l[i].second;
+                k = l[i].first;
+                i++;
             } else {
-                h1 = s1[i++].second;
-                h2 = s2[j++].second;
-                l = l1;
+                hr = r[j].second;
+                k = r[j].first;
+                j++;
             }
-            int h = max(h1, h2);
-            if(h != prevH) {
-                s.push_back(make_pair(l, h));
-                prevH = h;
-            }
-        }
-        while(i < n1) {
-            auto& p = s1[i++];
-            int l = p.first, h = p.second;
-            if(h != prevH) {
-                s.push_back(make_pair(l, h));
-                prevH = h;
+            int h = max(hl, hr);
+            if(h != prev_h) {
+                res.emplace_back(k, h);
+                prev_h = h;
             }
         }
-        while(j < n2) {
-            auto& p = s2[j++];
-            int l = p.first, h = p.second;
-            if(h != prevH) {
-                s.push_back(make_pair(l, h));
-                prevH = h;
-            }
-        }
-        return s;
+        return res;
     }
 };
